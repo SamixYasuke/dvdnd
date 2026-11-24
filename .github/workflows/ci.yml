@@ -7,6 +7,8 @@ on:
 
 permissions:
   contents: read
+  # stellar/stellar-cli verifies the release attestation before installing.
+  attestations: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,8 +24,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Pinned so rustfmt/clippy results are reproducible; bump deliberately.
       - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@1.94.1
         with:
           targets: wasm32v1-none
           components: rustfmt, clippy
