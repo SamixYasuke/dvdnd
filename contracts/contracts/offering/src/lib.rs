@@ -1,4 +1,7 @@
 #![no_std]
+// Soroban entry points are part of the contract ABI; their argument lists are
+// fixed by the interface rather than chosen for Rust ergonomics.
+#![allow(clippy::too_many_arguments)]
 //! Fixed-price, all-or-nothing raises for company share tokens, each under a
 //! securities exemption with its own rules.
 //!
@@ -466,7 +469,7 @@ impl Offering {
 
         token::TokenClient::new(&env, &config.usdc).transfer(
             &investor,
-            &env.current_contract_address(),
+            env.current_contract_address(),
             &amount,
         );
         set_persistent(&env, &key, &total);
@@ -829,7 +832,7 @@ fn count_holder(env: &Env, raise: &mut Raise, holder: &Address) {
 }
 
 fn require_reason(env: &Env, reason: &String) {
-    if reason.len() == 0 {
+    if reason.is_empty() {
         panic_with_error!(env, Error::InvalidTerms);
     }
 }

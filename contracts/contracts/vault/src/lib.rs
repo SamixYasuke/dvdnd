@@ -6,7 +6,7 @@
 //! - Tokens locked during a period are *pending*; they start earning when the
 //!   next period begins (at the next `distribute`).
 //! - Tokens unlocked during a period earn nothing for that period.
-//! So locking right before a payout and selling right after earns nothing.
+//!   So locking right before a payout and selling right after earns nothing.
 //!
 //! Accounting is O(1) per call: a reward-per-token accumulator per share token,
 //! plus a snapshot of the accumulator at the start of each period.
@@ -137,7 +137,7 @@ impl Vault {
 
         token::TokenClient::new(&env, &token).transfer(
             &holder,
-            &env.current_contract_address(),
+            env.current_contract_address(),
             &amount,
         );
         pos.pending += amount;
@@ -230,7 +230,7 @@ impl Vault {
         }
         token::TokenClient::new(&env, &usdc(&env)).transfer(
             &from,
-            &env.current_contract_address(),
+            env.current_contract_address(),
             &amount,
         );
 

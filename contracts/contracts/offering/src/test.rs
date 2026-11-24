@@ -30,7 +30,7 @@ struct MockVault;
 impl MockVault {
     pub fn lock(env: Env, token: Address, holder: Address, amount: i128) {
         holder.require_auth();
-        TokenClient::new(&env, &token).transfer(&holder, &env.current_contract_address(), &amount);
+        TokenClient::new(&env, &token).transfer(&holder, env.current_contract_address(), &amount);
         let key = (token, holder);
         let prev: i128 = env.storage().persistent().get(&key).unwrap_or(0);
         env.storage().persistent().set(&key, &(prev + amount));
